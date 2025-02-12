@@ -36,7 +36,7 @@ router.post("/", async (req: Request, res: Response, next: NextFunction) => {
 router.get("/", async (req: Request, res: Response, next: NextFunction) => {
     try {
         if (!req.cookies.uid || !getUser(req.cookies.uid)) {
-            res.json({ message: "User not logged in or Invalid token" });
+            res.json({ message: "Invalid token" });
         } else {
             res.json(getUser(req.cookies.uid));
         }
@@ -49,7 +49,7 @@ router.get("/", async (req: Request, res: Response, next: NextFunction) => {
 router.put("/", async (req: Request, res: Response, next: NextFunction) => {
     try {
         if (!req.cookies.uid || !getUser(req.cookies.uid)) {
-            res.json({ message: "User not logged in or Invalid token" });
+            res.json({ message: "Invalid token" });
         } else {
             const { email, password }: { email: string; password: string } = req.body;
             const user: UserLogin | null = await User.findOne({ email });

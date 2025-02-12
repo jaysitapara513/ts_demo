@@ -32,14 +32,14 @@ function getUser(token: string | undefined): TokenPayload | null {
 
 // verify token
 function verifyToken(req: Request, res: Response, next: NextFunction): void {
-  const token: string | undefined = req.headers.authorization;
-  if (!token) {
-    res.json({ message: "Token not provided" });
+  if (!req.headers.authorization) {
+    res.status(401).json({ message: "Token not provided" });
     return;
   }
+  const token: string | undefined = req.headers.authorization;
   const user: TokenPayload | null = getUser(token);
   if (!user) {
-    res.json({ message: "Invalid token" });
+    res.status(401).json({ message: "Invalid token" });
     return;
   }
   next();
