@@ -1,0 +1,18 @@
+Create a demo with typescript with following
+ features:-
+1. User Registration - done
+2. User Login - done
+3. Validate all apis using jwt token - done
+4. Get login user profile - done
+5. Update login user profile - done
+6. Create category CRUD apis with child parent level category - done
+8. Create Category list api with child parent data - done
+9. Create an API for common file upload - done ---
+10. Create product CRUD apis with following fields - done 
+    ->name
+    ->images (multiple images) - done
+    ->description
+    ->category id
+    ->price
+
+Note:- All points work on only for apis and no "any" keyword use in typescript. All variable in type declaration is compulsory.
