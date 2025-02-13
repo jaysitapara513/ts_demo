@@ -5,6 +5,29 @@ const router = express.Router();
 import product from "../models/product";
 import fileModel from "../models/files";
 
+interface ProductResponse {
+    name: string;
+    description: string;
+    category_id: string;
+    price: number;
+    image: {
+        fileName: string;
+        fileUrl: string;
+    } | null;
+}
+
+interface ProductData {
+    name: string;
+    description: string;
+    category_id: string;
+    price: number;
+    images: string;
+}
+
+interface ImageData {
+    fileName: string;
+    fileUrl: string;
+}
 
 // Create product
 router.post("/", async (req: Request, res: Response, next: NextFunction) => {
@@ -46,6 +69,36 @@ router.delete("/:id", async (req: Request, res: Response, next: NextFunction) =>
     }
 });
 
-// Get API for show product image
+// Get API
+router.get("/:id", async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const productId: string = req.params.id;
+        const productData: ProductData | null = await product.findById(productId);
+        if (!productData) {
+            res.json({ message: "Product not found" });
+            return;
+        }
+        const imageData: ImageData | null = await fileModel.findById(productData.images);
+        if (!imageData) {
+            res.json({ message: "Image not found" });
+            return;
+        }
+
+        const response: ProductResponse = {
+            category_id: productData.category_id,
+            name: productData.name,
+            description: productData.description,
+            price: productData.price,
+            image: {
+                fileName: imageData.fileName,
+                fileUrl: imageData.fileUrl
+            }
+        };
+        res.json(response);
+    } catch (error) {
+        next(error);
+    }
+});
+
 
 export default router;

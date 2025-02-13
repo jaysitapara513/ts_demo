@@ -32,7 +32,19 @@ const storage: StorageEngine = multer.diskStorage({
         cb(null, file.originalname);
     },
 });
-const upload: multer.Multer = multer({ storage });
+
+const upload: multer.Multer = multer({
+    storage,
+    fileFilter: (req: FileRequest, file: Express.Multer.File, cb: multer.FileFilterCallback) => {
+        const filetypes: RegExp = /jpg|jpeg|png/;
+        const extname: boolean = filetypes.test(path.extname(file.originalname).toLowerCase());
+        if (extname) {
+            cb(null, true);
+        } else {
+            cb(new Error("add only JPG, PNG, JPEG files"));
+        }
+    }
+});
 
 router.post("/", upload.single("file"), async (req: FileRequest, res: Response, next: NextFunction) => {
     try {

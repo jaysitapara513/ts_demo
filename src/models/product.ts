@@ -9,18 +9,20 @@ interface IProduct extends Document {
 
 const productSchema: Schema<IProduct> = new Schema({
   name: { type: String },
-  images: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "files",
-  }],
+  images: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "File"
+    }
+  ],
   description: { type: String },
   category_id: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "category",
+    ref: "Category"
   },
-  price: { type: Number },
+  price: { type: Number }
 });
-
+  
 const product = mongoose.model<IProduct>("Product", productSchema);
 
 export default product;
