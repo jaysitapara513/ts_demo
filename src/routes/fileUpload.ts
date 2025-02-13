@@ -8,13 +8,16 @@ import multer, { StorageEngine } from "multer";
 import fileModel from "../models/files";
 
 // upload directory
-const uploadPath = path.join(__dirname, "../public/images");
+const uploadPath: string = path.join(__dirname, "../public/images");
+const imageStore: string[] = [];
+
 interface FileRequest extends Request {
     file?: Express.Multer.File;
 }
+
 // check directory
 if (!fs.existsSync(uploadPath)) {
-    fs.mkdirSync(uploadPath, { recursive: true });
+    fs.mkdirSync(uploadPath);
 }
 
 const storage: StorageEngine = multer.diskStorage({
@@ -29,7 +32,7 @@ const storage: StorageEngine = multer.diskStorage({
         cb(null, file.originalname);
     },
 });
-const upload = multer({ storage });
+const upload: multer.Multer = multer({ storage });
 
 router.post("/", upload.single("file"), async (req: FileRequest, res: Response, next: NextFunction) => {
     try {
@@ -37,8 +40,17 @@ router.post("/", upload.single("file"), async (req: FileRequest, res: Response, 
             res.json({ message: "No file uploaded" });
             return;
         }
-        const fileUrl: String = `/images/${req.file.filename}`;
-        await fileModel.deleteMany({});
+        if (imageStore.length > 0) {
+            const oldImagePath: string = imageStore[0];
+            fs.unlink(oldImagePath, (err) => {
+                if (err) {
+                    res.json({ message: "Error deleting old image" });
+                }
+            });
+            imageStore.pop();
+        }
+        imageStore.push(req.file.path);
+        const fileUrl: string = `/images/${req.file.filename}`;
         await new fileModel({ fileUrl }).save();
         res.json({ message: "File uploaded successfully", fileUrl });
 

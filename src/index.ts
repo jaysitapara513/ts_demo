@@ -40,7 +40,7 @@ app.use("/update", jsonParser, verifyToken, login);
 app.use("/profile", jsonParser, verifyToken, login);
 app.use("/category", jsonParser, verifyToken, category);
 app.use("/product", jsonParser, verifyToken, product);
-app.use("/upload", verifyToken, fileUpload);
+app.use("/upload", fileUpload);
 app.use("/categoryList", verifyToken, categoryList);
 app.use("/pagination", pagination);
 
