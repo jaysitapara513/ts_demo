@@ -3,6 +3,7 @@ const router = express.Router();
 
 // import module 
 import product from "../models/product";
+import fileModel from "../models/files";
 
 
 // Create product
@@ -44,5 +45,7 @@ router.delete("/:id", async (req: Request, res: Response, next: NextFunction) =>
         next(error);
     }
 });
+
+// Get API for show product image
 
 export default router;

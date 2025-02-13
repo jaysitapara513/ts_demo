@@ -16,3 +16,9 @@ Create a demo with typescript with following
     ->price
 
 Note:- All points work on only for apis and no "any" keyword use in typescript. All variable in type declaration is compulsory.
+
+
+
+fileupload API image name store in product API => 
+    productImg name store in db => 
+        after name generate imageUrl and open to browser

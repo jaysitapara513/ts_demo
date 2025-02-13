@@ -50,9 +50,10 @@ router.post("/", upload.single("file"), async (req: FileRequest, res: Response, 
             imageStore.pop();
         }
         imageStore.push(req.file.path);
+        const fileName: string = req.file.filename;
         const fileUrl: string = `/images/${req.file.filename}`;
-        await new fileModel({ fileUrl }).save();
-        res.json({ message: "File uploaded successfully", fileUrl });
+        await new fileModel({ fileName, fileUrl }).save();
+        res.json({ message: "File uploaded successfully", fileName, fileUrl });
 
     } catch (error) {
         next(error);
